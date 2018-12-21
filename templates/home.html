@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Task Scheduler{% endblock %}
+
+{% block breadcrumb %}
+    {% if user.is_authenticated %}
+  <li class="breadcrumb-item active">My Tasks</li>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+  <li class="breadcrumb-item active">Sign up / Log in to schedule your tasks.</li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated and user.tasks.count %}
+    <div class="mb-4">
+        <a href="{% url 'new_task' %}" class="btn btn-primary">New task</a>
+    </div>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+            <th>Task</th>
+            <th>Deadline</th>
+            <th>Created At</th>
+            <th>Completed At</th>
+            <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in user.tasks.all %}
+            <tr>
+                <td>
+                {{ task.description }}
+                </td>
+                <td class="align-middle">
+                {% if task.is_past_due and not task.completed_at %}
+                    {{ task.deadline|naturaltime }}
+                    <div class="col-6 text-left">
+                            <small class="text-muted">overdue</small>
+                    </div>    
+                {% else %}
+                    {{ task.deadline|naturaltime }}
+                {% endif %}
+                </td>
+                <td class="align-middle">
+                {{ task.created_at|naturaltime }}
+                </td>
+                <td class="align-middle">
+                {% if task.completed_at %}    
+                    {{ task.completed_at|naturaltime }}
+                {% else %}
+                    <a href="{% url 'complete_task' task.pk  %}" class="btn btn-primary btn-sm" role="button">Done</a>
+                {% endif %}    
+                </td>
+                <td>
+                    {% if not task.completed_at %}
+                    <div class="col-6 text-left">
+                        <small class="text-muted"> <a href="{% url 'update_task' task.pk %}" > Update </a></small>
+                    </div>
+                    {% endif %}
+    
+                    <div class="col-6 text-left">
+                            <small class="text-muted"> <a href="{% url 'remove_task' task.pk %}" style="color :indianred"> Remove </a></small>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    
+{% endblock %}
