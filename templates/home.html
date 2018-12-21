@@ -14,10 +14,10 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated and user.tasks.count %}
     <div class="mb-4">
         <a href="{% url 'new_task' %}" class="btn btn-primary">New task</a>
     </div>
+    {% if user.is_authenticated and user.tasks.count %}
     <table class="table">
         <thead class="thead-inverse">
             <tr>
