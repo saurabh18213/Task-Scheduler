@@ -4,7 +4,7 @@ from .models import Profile
 from django.contrib.auth.models import User
 
 class SignUpForm(UserCreationForm):
-    image = forms.ImageField(required=False)
+    image = forms.ImageField(required=False, widget=forms.FileInput)
 
     class Meta:
         model = User
