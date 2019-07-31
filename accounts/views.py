@@ -15,7 +15,9 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             profile = user.profile
-            profile.image = form.cleaned_data["image"]
+
+            if form.cleaned_data["image"]:    
+                profile.image = form.cleaned_data["image"]
             profile.save()
             auth_login(request, user)
             return redirect('home')

@@ -5,9 +5,9 @@ import pytz
 # Create your models here.
 class Task(models.Model):
     description = models.CharField(max_length=255)
-    created_by = models.ForeignKey(User,related_name='tasks', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User,related_name='tasks', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
     @property
