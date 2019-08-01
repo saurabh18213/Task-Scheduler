@@ -35,7 +35,7 @@
             {% for task in user.tasks.all %}
             <tr>
                 <td>
-                {{ task.description }}
+                {{ task.name }}
                 </td>
                 <td class="align-middle">
                 {% if task.is_past_due and not task.completed_at %}

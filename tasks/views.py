@@ -12,10 +12,17 @@ def new_task(request):
     user = request.user
 
     if request.method == 'POST':
-        form = NewTaskForm(request.POST)
+        post = request.POST.copy()
+        d = request.POST['deadline']
+        d = d.replace("T", " ")
+        d = d + ":00"
+        post['deadline'] = d;
+        form = NewTaskForm(post)
+
         if form.is_valid():
             task = form.save(commit=False)
             task.created_by = user
+            print(task.duration)
             task.save()
             return redirect('home')
     else:    
@@ -26,11 +33,20 @@ def new_task(request):
 @login_required
 def update_task(request, pk):
     instance = get_object_or_404(Task, pk=pk)
-    form = NewTaskForm(request.POST or None, instance=instance)
+    
+    if request.method == 'POST':
+        post = request.POST.copy() or None
+        d = request.POST['deadline']
+        d = d.replace("T", " ")
+        d = d + ":00"
+        post['deadline'] = d;
+        form = NewTaskForm(post, instance=instance)
 
-    if form.is_valid():
-        form.save()
-        return redirect('home')
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = NewTaskForm(instance=instance)
 
     return render(request, 'update_task.html', {'form': form}) 
 
