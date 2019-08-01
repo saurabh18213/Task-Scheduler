@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 import pytz
 import datetime as Datetime
+from django.core.validators import MinValueValidator
 # Create your models here.
 class Task(models.Model):
     name = models.CharField(max_length=255, default='Task')
@@ -11,7 +12,8 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(null=True)
     repeat = models.BooleanField(default=False)
-    duration = models.DurationField(default=Datetime.timedelta(days=1, hours=0))
+    duration = models.DurationField(default=Datetime.timedelta(days=1, hours=0),
+                validators=[MinValueValidator(Datetime.timedelta(days=0, hours=0, minutes=5))])
     completed_at = models.DateTimeField(null=True, blank=True)
 
     @property

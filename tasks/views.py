@@ -22,7 +22,6 @@ def new_task(request):
         if form.is_valid():
             task = form.save(commit=False)
             task.created_by = user
-            print(task.duration)
             task.save()
             return redirect('home')
     else:    
@@ -53,7 +52,11 @@ def update_task(request, pk):
 @login_required
 def complete_task(request, pk):
     instance = get_object_or_404(Task, pk=pk)
-    instance.completed_at = datetime.now()
+
+    if(instance.repeat == True):
+        instance.deadline = instance.deadline + instance.duration
+    else:    
+        instance.completed_at = datetime.now()
     instance.save()
     return redirect('home')
 

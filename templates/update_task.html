@@ -16,3 +16,22 @@
     <button type="submit" class="btn btn-success">Post</button>
   </form>
 {% endblock %}
+{% block javascript %}
+<script>
+  ShowDuration();
+  
+  function ShowDuration() {
+    // Get the checkbox
+    var checkBox = document.getElementById("id_repeat");
+    // Get the output text
+    var DurationInput = document.getElementById("id_duration");
+    console.log(checkBox.checked);
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true){
+      DurationInput.parentNode.style.display = "block";
+    } else {
+      DurationInput.parentNode.style.display = "none";
+    }
+  }
+</script>  
+{% endblock %}
