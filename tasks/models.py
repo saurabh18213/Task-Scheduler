@@ -37,5 +37,5 @@ class Task(models.Model):
             return True
              
 class Notification(models.Model):
-    time = models.DateTimeField(null=False, default=datetime.now().astimezone(pytz.timezone("Asia/Kolkata"))) 
+    time = models.DateTimeField(null=True) 
     task = models.ForeignKey(Task, related_name='notifications', on_delete=models.CASCADE, null=True)

@@ -1,4 +1,4 @@
 {% autoescape off %}
-Hi {{ task.user.username }},
+Hi {{ task.created_by.username }},
 You have less than an hour to complete your task {{ task.name }}. 
 {% endautoescape %}
