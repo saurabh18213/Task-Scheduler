@@ -16,6 +16,9 @@ class Task(models.Model):
                 validators=[MinValueValidator(Datetime.timedelta(days=0, hours=0, minutes=5))])
     completed_at = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
     @property
     def is_past_due(self):
         now = datetime.now()
