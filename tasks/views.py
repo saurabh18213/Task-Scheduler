@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Task, Notification
 from datetime import datetime
 import datetime as Datetime
+import pytz
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -70,7 +71,7 @@ def complete_task(request, pk):
         task=instance);
         notification.save();
     else:    
-        instance.completed_at = datetime.now()
+        instance.completed_at = datetime.now().astimezone(pytz.timezone("Asia/Kolkata"))
         instance.save()
     return redirect('home')
 

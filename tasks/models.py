@@ -21,7 +21,7 @@ class Task(models.Model):
 
     @property
     def is_past_due(self):
-        now = datetime.now()
+        now = datetime.now().astimezone(pytz.timezone("Asia/Kolkata"))
         dead = self.deadline.astimezone(pytz.timezone("Asia/Kolkata"))
         # print(dead.tzinfo,now.tzinfo)
         # print(dead.time(), now.time())
@@ -37,5 +37,5 @@ class Task(models.Model):
             return True
              
 class Notification(models.Model):
-    time = models.DateTimeField(null=False, default=datetime.now()) 
+    time = models.DateTimeField(null=False, default=datetime.now().astimezone(pytz.timezone("Asia/Kolkata"))) 
     task = models.ForeignKey(Task, related_name='notifications', on_delete=models.CASCADE, null=True)
