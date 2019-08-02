@@ -13,7 +13,7 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True)
     repeat = models.BooleanField(default=False)
     duration = models.DurationField(default=Datetime.timedelta(days=1, hours=0),
-                validators=[MinValueValidator(Datetime.timedelta(days=0, hours=0, minutes=5))])
+                validators=[MinValueValidator(Datetime.timedelta(days=0, hours=1, minutes=0))])
     completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -36,4 +36,6 @@ class Task(models.Model):
             # print('case 3')
             return True
              
-    
+class Notification(models.Model):
+    time = models.DateTimeField(null=False, default=datetime.now()) 
+    task = models.ForeignKey(Task, related_name='notifications', on_delete=models.CASCADE, null=True)

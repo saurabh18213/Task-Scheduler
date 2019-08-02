@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import NewTaskForm
 from django.contrib.auth.decorators import login_required
-from .models import Task
+from .models import Task, Notification
 from datetime import datetime
+import datetime as Datetime
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -23,6 +24,9 @@ def new_task(request):
             task = form.save(commit=False)
             task.created_by = user
             task.save()
+            notification = Notification(time = task.deadline - Datetime.timedelta(days=0, hours=1, minutes=0),
+            task=task);
+            notification.save();
             return redirect('home')
     else:    
         form = NewTaskForm()
@@ -42,7 +46,12 @@ def update_task(request, pk):
         form = NewTaskForm(post, instance=instance)
 
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            task.save()
+            Notification.objects.filter(task=task).delete()
+            notification = Notification(time=task.deadline - Datetime.timedelta(days=0, hours=1, minutes=0),
+            task=task);
+            notification.save();
             return redirect('home')
     else:
         form = NewTaskForm(instance=instance)
@@ -52,12 +61,17 @@ def update_task(request, pk):
 @login_required
 def complete_task(request, pk):
     instance = get_object_or_404(Task, pk=pk)
+    Notification.objects.filter(task=instance).delete()
 
     if(instance.repeat == True):
         instance.deadline = instance.deadline + instance.duration
+        instance.save()
+        notification = Notification(time=instance.deadline - Datetime.timedelta(days=0, hours=1, minutes=0),
+        task=instance);
+        notification.save();
     else:    
         instance.completed_at = datetime.now()
-    instance.save()
+        instance.save()
     return redirect('home')
 
 @login_required

@@ -11,7 +11,7 @@ class NewTaskForm(forms.ModelForm):
                 widget=forms.CheckboxInput(attrs={'style': 'width: 2%;', 'onclick':'ShowDuration()'}))
     duration = forms.DurationField(initial=datetime.timedelta(days=1, hours=0), 
                 required=False, label='Repeat After', help_text="days hh:mm:ss", 
-                validators=[MinValueValidator(datetime.timedelta(days=0, hours=0, minutes=5))])
+                validators=[MinValueValidator(datetime.timedelta(days=0, hours=1, minutes=0))])
 
     class Meta:
         model = Task
