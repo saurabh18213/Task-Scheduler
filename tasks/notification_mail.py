@@ -8,13 +8,14 @@ from django.core.mail import EmailMessage
 
 def notify():
     nots = Notification.objects.filter(time__lte=datetime.now().astimezone(pytz.timezone("Asia/Kolkata")))
+    current_time = datetime.now().astimezone(pytz.timezone("Asia/Kolkata"))
 
     for notification in nots:
         task = notification.task
         Notification.objects.filter(task=task).delete()
 
         if(task.repeat):
-            new_notification = Notification(time=task.deadline + task.duration - Datetime.timedelta(days=0, hours=1, minutes=0),
+            new_notification = Notification(time=current_time + task.duration,
             task=task);
             new_notification.save();
 

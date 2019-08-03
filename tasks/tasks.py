@@ -5,7 +5,7 @@ from .notification_mail import notify
 
 
 @periodic_task(
-    run_every=(crontab(minute='*/5')),
+    run_every=(crontab(minute='*/10')),
     name="notify",
     ignore_result=True
 )
