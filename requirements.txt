@@ -22,7 +22,7 @@ hyperlink==19.0.0
 idna==2.8
 incremental==17.5.0
 kombu==3.0.37
-Pillow==6.1.0
+Pillow==9.0.0
 psycopg2==2.8.3
 pycparser==2.19
 PyHamcrest==1.9.0
